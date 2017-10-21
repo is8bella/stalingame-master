@@ -73,6 +73,13 @@ public class Start implements ActionListener , MouseListener {
 		frame.setVisible(false);
 		gameframe.setVisible(true);
 		
+		if (e.getSource() == yellow) {
+			yellow.setBackground(Color.YELLOW);
+		}
+		else {
+			yellow.setBackground(Color.YELLOW.darker());
+		}
+		
 	}
 
 	@Override
@@ -83,12 +90,7 @@ public class Start implements ActionListener , MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (e.getSource() == yellow) {
-			yellow.setBackground(Color.YELLOW);
-		}
-		else {
-			yellow.setBackground(Color.YELLOW.darker());
-		}
+		
 	}
 
 	@Override
