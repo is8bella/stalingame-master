@@ -7,14 +7,19 @@ import javax.swing.JPanel;
 
 public class Renderer extends JPanel
 {
+Stalin stalin;
+	public Renderer(Stalin stalin) {
+		// TODO Auto-generated constructor stub
+		this.stalin = stalin;
+	}
 
 	protected void paintComponent(Graphics g) 
 	{
 		super.paintComponent(g);
 		
-		if(Stalin.stalin != null)
+		if(stalin != null)
 		{
-		Stalin.stalin.paint((Graphics2D)g);
+		stalin.paint((Graphics2D)g);
 		}
 	}
 

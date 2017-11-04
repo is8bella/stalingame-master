@@ -18,7 +18,6 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 public class Stalin implements ActionListener, MouseListener{
-	public static Stalin stalin;
 	
 	public int WIDTH = 700;
 	
@@ -26,9 +25,11 @@ public class Stalin implements ActionListener, MouseListener{
 	
 	public int flash = 0, tick, repPattern;
 	
+	public int currentIndex = 0;
+	
 	public Renderer renderer;
 	
-	public boolean newPattern;
+	public boolean turn = false;
 	
 	JFrame frame = new JFrame("STALIN");
 	
@@ -38,7 +39,7 @@ public class Stalin implements ActionListener, MouseListener{
 	
 	JButton play = new JButton("START");
 	
-	ArrayList<Integer> num = new ArrayList<Integer>();
+	ArrayList<Integer> pattern = new ArrayList<Integer>();
 	
 	ArrayList<Integer> user = new ArrayList<Integer>();
 	
@@ -46,54 +47,33 @@ public class Stalin implements ActionListener, MouseListener{
 	
 	Timer timer = new Timer(1000,this);
 	
-
-	public void pattGenerator() {
-		level ++; 
-		
-		for (int i = 0; i < level; i++) {
-			int random = new Random().nextInt(4-1+1) +1;
-			num.add(random);
-			
-			if(random == 1) {
-				flash = 1; 
-				System.out.println("white pattern");
-			}
-			else if(random == 2) {
-				flash = 2;
-				System.out.println("blue pattern");
-			}
-			else if(random == 3) {
-				flash = 3;
-				System.out.println("red pattern");
-			}
-			else if(random == 4) {
-				flash = 4;
-				System.out.println("yellow pattern");
-			}
-			
-		}
+	public int x = 0;
 	
-		System.out.println(num);
 
-		
+	public void addNextFlash() {
+			int random = new Random().nextInt(4-1+1) +1;
+			pattern.add(random);
 	}
 	
+	
+	
 	public Stalin() {
-		renderer = new Renderer();
-		
+		renderer = new Renderer(this);
+
 		frame.setSize(WIDTH, HEIGHT);
 		frame.add(renderer);
 		frame.setResizable(false);
 		frame.addMouseListener(this);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		addNextFlash();
+
 	}
 	
 	
 	public static void main(String[] args) {
 		Stalin stalingame = new Stalin();
-		stalin = new Stalin();
-
-		stalin.startMenu();
+		stalingame.startMenu();
 		
 	}
 
@@ -125,16 +105,25 @@ public class Stalin implements ActionListener, MouseListener{
 			timer.start();
 		}
 		
-		if(tick == 15) {
-			stalin.pattGenerator();
+		//delay when first started
+		if(tick == 2) {
+			this.addNextFlash();
+			flash = pattern.get(currentIndex);
 		}
 		
 		tick++;
-		if(tick % 3 == 0) {
+		
+		if(tick %4 == 0 && turn == false) {
+			flash = pattern.get(currentIndex);
+		}
+		else if(tick % 2 == 0) {
 			flash = 0;
 			System.out.println("flash off");
+			//this.addNextFlash();
+			currentIndex++;
 		}
-		System.out.println("tick");
+		
+		System.out.println(tick);
 		
 		renderer.repaint();
 	
@@ -193,7 +182,7 @@ public class Stalin implements ActionListener, MouseListener{
 		int y = e.getY();
 		
 		//assigning coordinates to flash#
-		if(tick > 18) {
+		if(tick > 1) {
 			if(x > 0 && x < WIDTH/2 && y > 0 && y < HEIGHT/2) {
 				flash = 1;
 				tick = 1;
@@ -217,6 +206,8 @@ public class Stalin implements ActionListener, MouseListener{
 		}
 			
 			frame.repaint();
+			
+		
 	}
 	
 	@Override
