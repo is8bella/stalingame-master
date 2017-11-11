@@ -31,6 +31,8 @@ public class Stalin implements ActionListener, MouseListener{
 	
 	public boolean turn = false;
 	
+	public boolean listcheck = false;
+	
 	JFrame frame = new JFrame("STALIN");
 	
 	JFrame start = new JFrame("START STALIN");
@@ -45,7 +47,7 @@ public class Stalin implements ActionListener, MouseListener{
 	
 	public int level = 0; 
 	
-	Timer timer = new Timer(1000,this);
+	Timer timer = new Timer(500,this);
 	
 	public int x = 0;
 	
@@ -69,6 +71,7 @@ public class Stalin implements ActionListener, MouseListener{
 		addNextFlash();
 
 	}
+	
 	
 	
 	public static void main(String[] args) {
@@ -103,26 +106,63 @@ public class Stalin implements ActionListener, MouseListener{
 			start.setVisible(false);
 			frame.setVisible(true);
 			timer.start();
+			turn = false;
 		}
 		
-		//delay when first started
-		if(tick == 2) {
-			this.addNextFlash();
+		//delay when first start
+		if(turn == false) {
+		if(tick == 4) {
 			flash = pattern.get(currentIndex);
+			this.addNextFlash();
+			System.out.println("pattern size: " + pattern.size());
 		}
 		
 		tick++;
-		
-		if(tick %4 == 0 && turn == false) {
+			
+		if(tick % 5 == 0) {
+			//this.addNextFlash();
+			currentIndex++;
+			System.out.println("CI: " + currentIndex);
 			flash = pattern.get(currentIndex);
+			
 		}
 		else if(tick % 2 == 0) {
 			flash = 0;
 			System.out.println("flash off");
 			//this.addNextFlash();
-			currentIndex++;
+		}		
+		}
+		if(pattern.size() - 1 == currentIndex && tick > 5) {
+			turn = true;
 		}
 		
+		
+		/*if(turn == true) {
+		for (int i = 0; i < pattern.size(); i++) {
+	
+			if(pattern.get(i) == user.get(i)) {
+				listcheck = true;
+			}
+			else{
+				listcheck = false;
+			}
+				//this.addNextFlash();
+		}
+	
+		if(listcheck) {
+			turn = false;
+			timer.restart();
+			currentIndex = 0;
+			user.clear();
+			System.out.println("user = pattern");
+		}
+		
+		}*/
+		if(listcheck = false) {
+			System.exit(0);
+		}
+		
+		System.out.println(turn);
 		System.out.println(tick);
 		
 		renderer.repaint();
@@ -181,27 +221,52 @@ public class Stalin implements ActionListener, MouseListener{
 		int x = e.getX();
 		int y = e.getY();
 		
-		//assigning coordinates to flash#
-		if(tick > 1) {
+		if(tick > 2 && turn == true) {
 			if(x > 0 && x < WIDTH/2 && y > 0 && y < HEIGHT/2) {
 				flash = 1;
 				tick = 1;
 				System.out.println("white");
+				user.add(flash);
 			}
 			else if (x > WIDTH/2 && x < WIDTH && y > 0 && y < HEIGHT/2) {
 				flash = 2;
 				tick = 1;
 				System.out.println("blue");
+				user.add(flash);
 			}
 			else if (x > 0 && x < WIDTH/2 && y > HEIGHT/2 && y < HEIGHT) {
 				flash = 3;
 				tick = 1; 
 				System.out.println("red");
+				user.add(flash);
 			}
 			else if (x > WIDTH/2 && x < WIDTH && y > HEIGHT/2 && y < HEIGHT) {
 				flash = 4;
 				tick = 1;
 				System.out.println("yellow");
+				user.add(flash);
+			}
+		
+			System.out.println("U: " + user);
+			System.out.println("P: " + pattern);
+			
+			for (int i = 0; i < pattern.size()-1; i++) {
+				
+				if(pattern.get(i) == user.get(i)) {
+					listcheck = true;
+				}
+				else{
+					listcheck = false;
+				}
+					//this.addNextFlash();
+			}
+		
+			if(listcheck) {
+				turn = false;
+				timer.restart();
+				currentIndex = 0;
+				user.clear();
+				System.out.println("user = pattern");
 			}
 		}
 			
