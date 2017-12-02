@@ -48,7 +48,7 @@ public class Stalin implements ActionListener, MouseListener{
 	
 	public int level = 0; 
 	
-	Timer timer = new Timer(500,this);
+	Timer timer = new Timer(500/3,this);
 	
 	public int x = 0;
 	
@@ -118,7 +118,7 @@ public class Stalin implements ActionListener, MouseListener{
 		if(turn == false) {
 			System.out.println("Computer's Turn");
 			
-			if(tick == 3) {
+			if(tick ==3) { 
 				this.addNextFlash();
 				flash = pattern.get(currentIndex);
 				System.out.println("pattern size: " + pattern.size());
@@ -126,49 +126,39 @@ public class Stalin implements ActionListener, MouseListener{
 		
 			tick++;
 			
-			if(tick % 5 == 0) {	//changed from %5 to %3 as a test
-				//this.addNextFlash();
+			if(tick % 5 == 0) { 
 				System.out.println("CI: " + currentIndex);
 				flash = pattern.get(currentIndex);
 				currentIndex++;
-				//try {
-				//	Thread.sleep(1000);
-			//	} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-				//	e1.printStackTrace();
-				//}
-				
-				//flash = 0;
-				//System.out.println("flash off");
+		
 			}
 		}
 		
-		if(pattern.size() == currentIndex && tick > 5) {
+		if(pattern.size() == currentIndex && tick > 5) { 
 			turn = true;
 			System.out.println("User's Turn");
 		}
 		
-		if(listcheck = false) {	//never run
+		if(listcheck == true) {	//never runs
 			System.out.println("user is incorrect");
-			frame.setVisible(false);
+		frame.setVisible(false);
 		}
-		
+			
 		System.out.println("tick = " + tick);
 		
 		renderer.repaint();
 	}
-
+int counter = 0;
 	public void paint(Graphics2D g) { //makes flashes work
+	
 		if(flash == 1) {
 			g.setColor(Color.WHITE);
-			try { //grid
-				Thread.sleep(tick%2);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(counter == 3) {
+				flash = 0;
+				counter = 0;
 			}
+			counter++;
 			System.out.println("White Flash");
-			
 		}
 		else {
 			g.setColor(Color.WHITE.darker());
@@ -177,12 +167,11 @@ public class Stalin implements ActionListener, MouseListener{
 		
 		if(flash == 2) {
 			g.setColor(Color.BLUE);
-			try { //grid
-				Thread.sleep(tick%2);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(counter == 3) {
+				flash = 0;
+				counter = 0;
 			}
+			counter++;
 			System.out.println("Blue Flash");
 		}
 		else {
@@ -192,12 +181,11 @@ public class Stalin implements ActionListener, MouseListener{
 		
 		if(flash == 3) {
 			g.setColor(Color.RED);
-			try { //grid
-				Thread.sleep(tick%2);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(counter == 3) {
+				flash = 0;
+				counter = 0;
 			}
+			counter++;
 			System.out.println("Red Flash");
 		}
 		else {
@@ -207,12 +195,11 @@ public class Stalin implements ActionListener, MouseListener{
 		
 		if(flash == 4) {
 			g.setColor(Color.YELLOW);
-			try { //grid
-				Thread.sleep(tick%2);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(counter == 3) {
+				flash = 0;
+				counter = 0;
 			}
+			counter++;
 			System.out.println("Yellow Flash");
 		}
 		else {
@@ -230,7 +217,7 @@ public class Stalin implements ActionListener, MouseListener{
 		int y = e.getY();
 		
 		if(turn == true) {
-			tick = 0; //grid
+			tick = 1; //grid
 			if(x > 0 && x < WIDTH/2 && y > 0 && y < HEIGHT/2) {
 				flash = 1;
 				System.out.println("white");
