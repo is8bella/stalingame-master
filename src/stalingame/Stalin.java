@@ -14,6 +14,7 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -32,7 +33,7 @@ public class Stalin implements ActionListener, MouseListener{
 	
 	public boolean turn = false;
 	
-	public boolean listcheck = false;
+	public int listcheck = 0;
 	
 	JFrame frame = new JFrame("STALIN");
 	
@@ -118,7 +119,7 @@ public class Stalin implements ActionListener, MouseListener{
 		if(turn == false) {
 			System.out.println("Computer's Turn");
 			
-			if(tick ==3) { 
+			if(tick == 3) { 
 				this.addNextFlash();
 				flash = pattern.get(currentIndex);
 				System.out.println("pattern size: " + pattern.size());
@@ -139,10 +140,10 @@ public class Stalin implements ActionListener, MouseListener{
 			System.out.println("User's Turn");
 		}
 		
-		if(listcheck == true) {	//never runs
+		/*if(listcheck == true) {	//never runs
 			System.out.println("user is incorrect");
 		frame.setVisible(false);
-		}
+		}*/
 			
 		System.out.println("tick = " + tick);
 		
@@ -252,22 +253,31 @@ int counter = 0;
 					//this.addNextFlash();
 				
 				if(user.equals(pattern)) {
-					listcheck = true;
+					listcheck = 1;
 				}
 				else {
-					listcheck = false;
+					listcheck = 2;
 				}
 			//}
 		
-			if(listcheck == true) {
+			if(listcheck == 1) {
 				turn = false;
 				tick = 0;
 				currentIndex = 0;
 				user.clear();
 				System.out.println("user = pattern");
-				listcheck = false;
+				listcheck = 0;
 				//System.out.println(user);
 			}
+			
+			if(listcheck == 2) {
+				System.out.println("INCORRECT");			
+			}
+			
+			//else{
+			//	JOptionPane.showMessageDialog(null, "Fail.");
+			//	System.exit(0);
+			//}
 			
 			
 		}
