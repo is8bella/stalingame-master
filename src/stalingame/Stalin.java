@@ -1,6 +1,7 @@
 package stalingame;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -29,11 +30,13 @@ public class Stalin implements ActionListener, MouseListener{
 	
 	public int currentIndex = 0;
 	
+	public int userscore = 0;
+	
 	public Renderer renderer;
 	
 	public boolean turn = false;
 	
-	public int listcheck = 0;
+	public boolean listcheck = false;
 	
 	JFrame frame = new JFrame("STALIN");
 	
@@ -42,6 +45,8 @@ public class Stalin implements ActionListener, MouseListener{
 	JPanel panel = new JPanel();
 	
 	JButton play = new JButton("START");
+	
+	JLabel score = new JLabel("Score: " + currentIndex);
 	
 	ArrayList<Integer> pattern = new ArrayList<Integer>();
 	
@@ -55,8 +60,8 @@ public class Stalin implements ActionListener, MouseListener{
 	
 
 	public void addNextFlash() {
-			int random = new Random().nextInt(4-1+1) +1;
-			pattern.add(random);
+		int random = new Random().nextInt(4-1+1) +1;
+		pattern.add(random);
 	}
 	
 	public void flash() {
@@ -106,7 +111,7 @@ public class Stalin implements ActionListener, MouseListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(pattern); //get rid of later
+		System.out.println("pattern: " + pattern); //get rid of later
 		
 		if(e.getSource() == play) {
 			start.setVisible(false);
@@ -140,18 +145,14 @@ public class Stalin implements ActionListener, MouseListener{
 			System.out.println("User's Turn");
 		}
 		
-		/*if(listcheck == true) {	//never runs
-			System.out.println("user is incorrect");
-		frame.setVisible(false);
-		}*/
-			
 		System.out.println("tick = " + tick);
 		
 		renderer.repaint();
 	}
 int counter = 0;
 	public void paint(Graphics2D g) { //makes flashes work
-	
+		 Graphics2D g2 = (Graphics2D) g;
+		
 		if(flash == 1) {
 			g.setColor(Color.WHITE);
 			if(counter == 3) {
@@ -208,6 +209,11 @@ int counter = 0;
 		}
 		g.fillRect(WIDTH/2, HEIGHT/2, WIDTH/2, HEIGHT/2);
 		
+		  int fontSize = 20;
+	        Font f = new Font("Times New Roman", Font.BOLD, fontSize);
+	        g2.setFont(f);
+	        g.setColor(Color.black);
+	        g.drawString("Score: " + userscore, 10, 25);
 	}
 	
 	@Override
@@ -242,46 +248,47 @@ int counter = 0;
 			System.out.println("U: " + user);
 			System.out.println("P: " + pattern);
 			
-			//for (int i = 0; i < pattern.size(); i++) {
+			if(user.size() == pattern.size()) {
+				int check = 0;
+				check++;
+				System.out.println("check = " + check);
+				for (int i = 0; i < pattern.size(); i++) {
 				
-				/*if(pattern.get(i) == user.get(i)) {
-					listcheck = true;
+					if(user.get(i) == pattern.get(i)) {
+						listcheck = true;
+						System.out.println("listcheck = true");
+					}
+					else{
+						listcheck = false;
+						System.out.println("listcheck = false");
+						break;
+					}
 				}
-				else{
+				
+				if(listcheck == true) {
+					userscore++;
+					turn = false;
+					tick = 0;
+					currentIndex = 0;
+					user.clear();
+					System.out.println("user = pattern");
+					//System.out.println(user);
 					listcheck = false;
-				}*/
-					//this.addNextFlash();
+				}
 				
-				if(user.equals(pattern)) {
-					listcheck = 1;
+				else{
+					System.out.println("INCORRECT");		
+					JOptionPane.showMessageDialog(null, "Incorrect.");
+					System.exit(0);
 				}
-				else {
-					listcheck = 2;
-				}
-			//}
-		
-			if(listcheck == 1) {
-				turn = false;
-				tick = 0;
-				currentIndex = 0;
-				user.clear();
-				System.out.println("user = pattern");
-				listcheck = 0;
-				//System.out.println(user);
+
 			}
 			
-			if(listcheck == 2) {
-				System.out.println("INCORRECT");			
-			}
 			
-			//else{
-			//	JOptionPane.showMessageDialog(null, "Fail.");
-			//	System.exit(0);
-			//}
 			
 			
 		}
-			
+		
 		frame.repaint();
 	}
 	
